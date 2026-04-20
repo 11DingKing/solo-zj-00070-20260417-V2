@@ -73,8 +73,17 @@ type RecommendArticleVO struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-// 文章的详细信息
+// 文章的详细信息（默认过滤已删除的文章）
 func GetArticle(db *gorm.DB, id int) (data *Article, err error) {
+	result := db.Preload("Category").Preload("Tags").
+		Where(Article{Model: Model{ID: id}}).
+		Where("is_delete = 0").
+		First(&data)
+	return data, result.Error
+}
+
+// 获取文章详情（包含已删除的，供后台管理端使用）
+func GetArticleAll(db *gorm.DB, id int) (data *Article, err error) {
 	result := db.Preload("Category").Preload("Tags").
 		Where(Article{Model: Model{ID: id}}).
 		First(&data)

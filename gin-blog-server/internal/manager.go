@@ -102,10 +102,11 @@ func registerAdminHandler(r *gin.Engine) {
 	// 标签模块
 	tag := auth.Group("/tag")
 	{
-		tag.GET("/list", tagAPI.GetList)     // 标签列表
-		tag.POST("", tagAPI.SaveOrUpdate)    // 新增/编辑标签
-		tag.DELETE("", tagAPI.Delete)        // 删除标签
-		tag.GET("/option", tagAPI.GetOption) // 标签选项列表
+		tag.GET("/list", tagAPI.GetList)         // 标签列表
+		tag.POST("", tagAPI.SaveOrUpdate)        // 新增/编辑标签
+		tag.PUT("/soft-delete", tagAPI.UpdateSoftDelete) // 软删除标签
+		tag.DELETE("", tagAPI.Delete)            // 物理删除标签
+		tag.GET("/option", tagAPI.GetOption)     // 标签选项列表
 	}
 	// 文章模块
 	articles := auth.Group("/article")
